@@ -10,3 +10,4 @@ def foo(x: int) -> Tuple[int, float]:
 pprint.pprint("Hello")
 
 print(foo(4))
+print(foo(5))
