@@ -11,5 +11,6 @@ pprint.pprint("Hello")
 
 print(foo(4))
 print(foo(5))
+print(foo(6))
 #wtf
 #give me more updates
