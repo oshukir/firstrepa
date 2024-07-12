@@ -11,7 +11,7 @@ router.message.filter(F.chat.type == "private")
 
 @router.message(Command("start") )
 async def cmd_start(message: Message):
-    await message.answer(text=f"Randomizer bot works in groups only"
-                               "To make the event in the group, add me there"
-                               "FYI, i work correctly and completely, when i am attached as admin"
+    await message.answer(text=f"Randomizer bot works in groups only\n"
+                               "To make the event in the group, add me there\n"
+                               "FYI, i work correctly and completely, when i am attached as admin\n"
                                "Have a nice day")

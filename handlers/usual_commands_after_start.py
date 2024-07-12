@@ -6,6 +6,8 @@ from aiogram.filters import Command, CommandObject, ChatMemberUpdatedFilter
 from aiogram.filters.chat_member_updated import (
     IS_NOT_MEMBER, IS_ADMIN, MEMBER
 )
+from filter import CheckAdmin
+from main import admins, chat_ids
 
 
 router = Router()
@@ -14,7 +16,7 @@ router.message.filter(F.chat.type == "group")
 
 @router.message(
     Command("start"),
-    ChatMemberUpdatedFilter(member_status_changed=IS_ADMIN)
+    ChatMemberUpdatedFilter(member_status_changed=IS_ADMIN),
 )
 async def cmd_start(message: Message):
-    
+    await message.answer("YEEEEH, you are admin. so lets start")

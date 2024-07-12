@@ -5,12 +5,19 @@ from aiogram import Bot, Dispatcher, Router, types
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import Command
+from config_reader import config
+
+from handlers.usual_commands_for_start.group import (
+    router as group_router
+)
+from handlers.usual_commands_for_start.private import (
+    router as private_router
+)
+
 
 chat_ids = []
 admins = []
 
-
-from config_reader import config
 
 async def main():
     logging.basicConfig(
@@ -26,10 +33,13 @@ async def main():
         )
     )
 
+    dp.include_routers(
+        group_router,
+        private_router
+    )
     
     
-    
-    await dp.start_polling(bot, allowed_updates=["message", "inline_query", "chat_member"], admins=admins, )
+    await dp.start_polling(bot, allowed_updates=["message", "inline_query", "my_chat_member"])
 
 if __name__ == "__main__":
     asyncio.run(main())
