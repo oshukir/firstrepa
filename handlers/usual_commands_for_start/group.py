@@ -12,7 +12,7 @@ from aiogram.filters.chat_member_updated import (
 router = Router()
 
 router.my_chat_member.filter(F.chat.type.in_({"group", "supergroup"}))
-router.message.filter(F.chat.type.int_({"group", "supergroup"}))
+router.message.filter(F.chat.type.in_({"group", "supergroup"}))
 
 @router.my_chat_member(
     ChatMemberUpdatedFilter(
@@ -33,7 +33,12 @@ async def bot_added_as_admin(event: ChatMemberUpdated):
         member_status_changed=IS_MEMBER >> ADMINISTRATOR
     )
 )
-async def bot_added_as_admin(event: ChatMemberUpdated):
+async def bot_added_as_admin(event: ChatMemberUpdated, chat_ids_with_adm: dict, bot:Bot):
+    admins = await bot.get_chat_administrators(event.chat.id)
+    admins_ids = [admin.user.id for admin in admins]
+    chat_ids_with_adm.setdefault(event.chat.id, admins_ids)
+
+    print(chat_ids_with_adm[event.chat.id])
     await event.answer(
         text=f"Good job, buddy. Now, it is time to make events.\n"
              f"Press /start to organise lottery (it is only available to admins)"

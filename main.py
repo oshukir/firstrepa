@@ -13,10 +13,9 @@ from handlers.usual_commands_for_start.group import (
 from handlers.usual_commands_for_start.private import (
     router as private_router
 )
+from handlers.usual_commands_after_start import router as after_start_router
 
-
-chat_ids = []
-admins = []
+chat_ids_with_adm = {}
 
 
 async def main():
@@ -35,11 +34,12 @@ async def main():
 
     dp.include_routers(
         group_router,
-        private_router
+        private_router,
+        after_start_router
     )
     
     
-    await dp.start_polling(bot, allowed_updates=["message", "inline_query", "my_chat_member"])
+    await dp.start_polling(bot, allowed_updates=["message", "inline_query", "my_chat_member", "chat_member"], chat_ids_with_adm=chat_ids_with_adm)
 
 if __name__ == "__main__":
     asyncio.run(main())
