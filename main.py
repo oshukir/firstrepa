@@ -1,16 +1,35 @@
-import math
-import pprint
-from typing import Tuple
+import asyncio
+import logging
 
-print("Helllo world")
+from aiogram import Bot, Dispatcher, Router, types
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
+from aiogram.filters import Command
 
-def foo(x: int) -> Tuple[int, float]:
-    return x, math.pi+1
+chat_ids = []
+admins = []
 
-pprint.pprint("Hello")
 
-print(foo(4))
-print(foo(5))
-print(foo(6))
-#wtf
-#give me more updates
+from config_reader import config
+
+async def main():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    )
+
+    dp = Dispatcher()
+    bot = Bot(
+        config.bot_token.get_secret_value(),
+        default=DefaultBotProperties(
+            parse_mode=ParseMode.HTML
+        )
+    )
+
+    
+    
+    
+    await dp.start_polling(bot, allowed_updates=["message", "inline_query", "chat_member"], admins=admins, )
+
+if __name__ == "__main__":
+    asyncio.run(main())
