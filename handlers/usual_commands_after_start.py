@@ -7,6 +7,7 @@ from aiogram.filters.chat_member_updated import (
     IS_NOT_MEMBER, IS_ADMIN, MEMBER, ADMINISTRATOR
 )
 from typing import Dict
+from keyboards.inline_keyboard import get_keyboard
 
 
 
@@ -24,6 +25,7 @@ async def cmd_start(message: Message, chat_ids_with_adm):
     print(chat_ids_with_adm)
 
     if message.chat.id in chat_ids_with_adm and message.from_user.id in chat_ids_with_adm[message.chat.id]:
-        await message.answer("YEEEEH, you are admin. So lets start")
+        await message.answer(text="YEEEEH, you are admin. So lets start",
+                             reply_markup=get_keyboard())
     else:
         await message.answer("Organising lotteries is available only for admins")

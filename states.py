@@ -1,7 +1,8 @@
 from aiogram.fsm.state import State, StatesGroup
 
 class OrganiseEvent(StatesGroup):
-    name = State()
-    description = State()
-    deadline = State()
-    
+    set_name = State()
+    set_description = State()
+    set_date = State()
+    set_time = State()
+ 
