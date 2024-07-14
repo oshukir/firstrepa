@@ -7,6 +7,7 @@ from aiogram.enums import ParseMode
 from aiogram.filters import Command
 from config_reader import config
 
+
 from handlers.usual_commands_for_start.group import (
     router as group_router
 )
@@ -17,6 +18,9 @@ from handlers.usual_commands_after_start import router as after_start_router
 from handlers.left_member import router as left_router
 from handlers.joined_member import router as joined_router
 from callback import router as cb_router
+from handlers.fsm_commands import (
+    name_fsm, description_fsm, prize_fsm, date_fsm
+)
 
 chat_ids_with_adm = {}
 chat_ids_with_players={}
@@ -42,7 +46,11 @@ async def main():
         after_start_router,
         left_router,
         joined_router,
-        cb_router
+        cb_router,
+        name_fsm.router,
+        description_fsm.router,
+        prize_fsm.router,
+        date_fsm.router
     )
     
     

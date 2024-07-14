@@ -17,7 +17,7 @@ router.message.filter(F.chat.type.in_({"group", "supergroup"}))
 
 
 @router.message(
-    Command("start"),
+    Command("start"), default_state
 )
 async def cmd_start(message: Message, chat_ids_with_adm):
 
