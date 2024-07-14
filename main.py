@@ -25,6 +25,7 @@ from handlers.fsm_commands import (
 chat_ids_with_adm = {}
 chat_ids_with_players={}
 chat_ids_with_lottery={}
+pinned_message = ""
 
 
 async def main():
@@ -58,7 +59,7 @@ async def main():
     
     
     await dp.start_polling(bot, allowed_updates=["message", "inline_query", "my_chat_member", "chat_member", "callback_query"], chat_ids_with_adm=chat_ids_with_adm,
-                           chat_ids_with_players=chat_ids_with_players, chat_ids_with_lottery=chat_ids_with_lottery)
+                           chat_ids_with_players=chat_ids_with_players, chat_ids_with_lottery=chat_ids_with_lottery, pinned_message = pinned_message)
 
 if __name__ == "__main__":
     asyncio.run(main())

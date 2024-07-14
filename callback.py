@@ -1,10 +1,11 @@
-from aiogram import Router, F
+from aiogram import Router, F, html
 from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
 from states import OrganiseEvent
 
 
 router = Router()
+
 
 @router.callback_query(F.data == "organise")
 async def send_fsm(callback : CallbackQuery, chat_ids_with_adm, state: FSMContext):
@@ -19,4 +20,13 @@ async def send_fsm(callback : CallbackQuery, chat_ids_with_adm, state: FSMContex
         await callback.answer()
     else:
         await callback.answer(show_alert=True, text="You are not allowed to make event")
+
+
+@router.callback_query(F.data == "participate")
+async def send_fsm(callback : CallbackQuery, chat_ids_with_adm, state: FSMContext, chat_ids_with_players, chat_ids_with_lottery):
+    print("!!!!!!!!!!!!!!!!!!!!!INSIDE CALLBACK TRACKER (2)!!!!!!!!!!!!!!!!!!!!!!")
+    await callback.answer(
+        text=f"You are in"
+    )
+    chat_ids_with_players[callback.message.chat.id].append(callback.from_user.id)
     

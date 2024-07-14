@@ -11,3 +11,13 @@ def get_keyboard() -> InlineKeyboardMarkup:
         )
     )
     return builder.as_markup()
+
+def get_participate_keyboard() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.add(
+        InlineKeyboardButton(
+            text="Participate",
+            callback_data="participate"
+        )
+    )
+    return builder.as_markup()

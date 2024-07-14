@@ -1,6 +1,6 @@
 from aiogram.types import Message, ChatMemberUpdated
 from aiogram.fsm.context import FSMContext
-from aiogram import Router, F
+from aiogram import Router, F, Bot
 from aiogram.fsm.state import default_state, any_state
 from aiogram.filters import Command, CommandObject, ChatMemberUpdatedFilter
 from aiogram.filters.chat_member_updated import (
@@ -55,7 +55,7 @@ async def cmd_cancel(message: Message, state: FSMContext):
 @router.message(
     Command("delete"), default_state, AdminFilter()
 )
-async def cmd_delete(message: Message, chat_ids_with_lottery: dict):
+async def cmd_delete(message: Message, chat_ids_with_lottery: dict, chat_ids_with_players, bot: Bot, pinned_message):
     if len(chat_ids_with_lottery[message.chat.id]) == 0:
         await message.answer(
             text="There is no lottery to delete"
@@ -66,6 +66,9 @@ async def cmd_delete(message: Message, chat_ids_with_lottery: dict):
             text="The only event {} is deleted".format(name)
         )
         chat_ids_with_lottery[message.chat.id].clear()
+        chat_ids_with_players[message.chat.id].clear()
+
+        bot.unpin_chat_message(chat_id=message.chat.id, message_id=pinned_message)
         print(chat_ids_with_lottery[message.chat.id])
 
 

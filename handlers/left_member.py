@@ -31,6 +31,8 @@ async def left_event_handler(event: ChatMemberUpdated, chat_ids_with_players: Di
         if event.new_chat_member.user.id in chat_ids_with_players[event.chat.id]:
             chat_ids_with_players.pop(event.new_chat_member.user.id)
 
+    
+
     await event.answer(text="THE admin is left")
 
 
