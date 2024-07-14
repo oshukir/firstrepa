@@ -16,7 +16,7 @@ async def name_fsm_handler(message: Message, state: FSMContext):
     await state.update_data(prize=message.text)
 
     await message.answer("Such a good boy. Please, enter the date of deadline as next template\n"
-                         "dd/mm/yy")
+                         "dd/mm/YYYY")
     
 @router.message(OrganiseEvent.set_prize)
 async def name_fsm_handler(message: Message, state: FSMContext):

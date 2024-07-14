@@ -12,9 +12,10 @@ class CheckAdmin(BaseFilter):
     
 
 class CheckDateFormat(BaseFilter):
-  def __call__(self, message: Message) ->  Union[bool, Dict[str, Any]]:
+  async def __call__(self, message: Message) ->  Union[bool, Dict[str, Any]]:
     try:
       date = message.text
+
 
       format = "%d/%m/%Y"
       res = datetime.strptime(date, format)
