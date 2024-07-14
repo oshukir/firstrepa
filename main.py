@@ -19,11 +19,12 @@ from handlers.left_member import router as left_router
 from handlers.joined_member import router as joined_router
 from callback import router as cb_router
 from handlers.fsm_commands import (
-    name_fsm, description_fsm, prize_fsm, date_fsm, time_fsm
+    name_fsm, description_fsm, prize_fsm, date_fsm, time_fsm, image_fsm
 )
 
 chat_ids_with_adm = {}
 chat_ids_with_players={}
+chat_ids_with_lottery={}
 
 
 async def main():
@@ -51,12 +52,13 @@ async def main():
         description_fsm.router,
         prize_fsm.router,
         date_fsm.router,
-        time_fsm.router
+        time_fsm.router,
+        image_fsm.router
     )
     
     
     await dp.start_polling(bot, allowed_updates=["message", "inline_query", "my_chat_member", "chat_member", "callback_query"], chat_ids_with_adm=chat_ids_with_adm,
-                           chat_ids_with_players=chat_ids_with_players)
+                           chat_ids_with_players=chat_ids_with_players, chat_ids_with_lottery=chat_ids_with_lottery)
 
 if __name__ == "__main__":
     asyncio.run(main())

@@ -18,7 +18,7 @@ async def name_fsm_handler(message: Message, state: FSMContext, time: List[int])
     await state.update_data(time=time)
     
 
-    await message.answer("Perfect. Now, appload the preview image for your lottery")
+    await message.answer("Perfect. Now, upload the preview image for your lottery")
     
 @router.message(OrganiseEvent.set_time)
 async def name_fsm_handler(message: Message, state: FSMContext):

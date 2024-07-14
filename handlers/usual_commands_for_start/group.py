@@ -20,7 +20,7 @@ router.message.filter(F.chat.type.in_({"group", "supergroup"}))
         member_status_changed=IS_NOT_MEMBER >> ADMINISTRATOR
     )
 )
-async def bot_added_as_admin(event: ChatMemberUpdated, chat_ids_with_adm: dict, bot:Bot):
+async def bot_added_as_admin(event: ChatMemberUpdated, chat_ids_with_adm: dict, bot:Bot, chat_ids_with_lottery: dict):
     await event.answer(
         text=f"I see you read all requirements to my complete work here\n"
              f"Thanks for adding me in the group: {event.chat.title}"
@@ -29,7 +29,7 @@ async def bot_added_as_admin(event: ChatMemberUpdated, chat_ids_with_adm: dict, 
     admins = await bot.get_chat_administrators(event.chat.id)
     admins_ids = [admin.user.id for admin in admins]
     chat_ids_with_adm[event.chat.id] = admins_ids
-
+    chat_ids_with_lottery[event.chat.id] = {}
 
 
 
@@ -38,10 +38,11 @@ async def bot_added_as_admin(event: ChatMemberUpdated, chat_ids_with_adm: dict, 
         member_status_changed=IS_MEMBER >> ADMINISTRATOR
     )
 )
-async def bot_added_as_admin(event: ChatMemberUpdated, chat_ids_with_adm: dict, bot:Bot):
+async def bot_added_as_admin(event: ChatMemberUpdated, chat_ids_with_adm: dict, bot:Bot, chat_ids_with_lottery: dict):
     admins = await bot.get_chat_administrators(event.chat.id)
     admins_ids = [admin.user.id for admin in admins]
     chat_ids_with_adm[event.chat.id] = admins_ids
+    chat_ids_with_lottery[event.chat.id] = {}
 
     await event.answer(
         text=f"Good job, buddy. Now, it is time to make events.\n"

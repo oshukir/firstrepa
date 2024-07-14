@@ -3,6 +3,7 @@ from aiogram.types import Message
 from typing import Tuple, List, Union, Any, Dict
 from datetime import datetime
 from datetime import date as datef
+from aiogram import Bot
 
 class CheckAdmin(BaseFilter):
     def __init__(self, admins: dict):
@@ -20,10 +21,8 @@ class CheckDateFormat(BaseFilter):
             print(f"Received date: {date_text}")
             date_format = "%d/%m/%Y"
 
-            # Parse the date according to the specified format
             parsed_date = datetime.strptime(date_text, date_format)
 
-            # Extract date components
             day, month, year = parsed_date.day, parsed_date.month, parsed_date.year
             print("THE TEMPLATE IS PASSED")
 
@@ -36,10 +35,10 @@ class CheckDateFormat(BaseFilter):
             print(f"{month} and {type(month)}")
             print(f"{day} and {type(day)}")
 
-            # Check if the parsed date is in the future
+
             if today < future_date:
                 print("THE DATE IS SET FOR A FUTURE EVENT")
-                return {"date": [year, month, day]}  # Return a list for clarity
+                return {"date": [year, month, day]}
             else:
                 print("THE DATE IS IN THE PAST")
                 return {"date": ["error"]}
@@ -54,14 +53,24 @@ class CheckDateFormat(BaseFilter):
 class CheckTimeFormat(BaseFilter):
   async def __call__(self, message: Message) ->  Union[bool, Dict[str, Any]]:
     try:
-      date = message.text
+        time = message.text
 
+        format = "%H:%M"
+        parsed_date = datetime.strptime(time, format)
 
-      format = "%H:%M"
-      res = datetime.strptime(date, format)
+        hour, minute = parsed_date.hour, parsed_date.minute
 
-      list1 = [int(element) for element in date.split(":")]
-
-      return {"time" : list1}
+        return {"time" : [hour, minute]}
     except ValueError:
-      return False  # Or raise an exception if you prefer
+        return False 
+    
+
+class AdminFilter(BaseFilter):
+    async def __call__(self, message: Message, bot: Bot) -> bool:
+        chat_member = await bot.get_chat_member(chat_id=message.chat.id, user_id=message.from_user.id)
+        if chat_member.status in ("administrator", "creator"):
+    # The user is an admin, handle accordingly
+            return True
+        else:
+    # The user is not an admin
+            return False

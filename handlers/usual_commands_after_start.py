@@ -8,12 +8,14 @@ from aiogram.filters.chat_member_updated import (
 )
 from typing import Dict
 from keyboards.inline_keyboard import get_keyboard
+from filter import AdminFilter
 
 
 
 router = Router()
 router.my_chat_member.filter(F.chat.type.in_({"group", "supergroup"}))
 router.message.filter(F.chat.type.in_({"group", "supergroup"}))
+router.chat_member.filter(ChatMemberUpdatedFilter(member_status_changed=ADMINISTRATOR))
 
 
 @router.message(
@@ -29,3 +31,41 @@ async def cmd_start(message: Message, chat_ids_with_adm):
                              reply_markup=get_keyboard())
     else:
         await message.answer("Organising lotteries is available only for admins")
+
+
+@router.message(
+    Command("cancel"), default_state, AdminFilter()
+)
+async def cmd_cancel(message: Message, state: FSMContext):
+    await message.answer(
+        text="There is nothing to cancel"
+    )
+
+
+@router.message(
+    Command("cancel"), any_state, AdminFilter()
+)
+async def cmd_cancel(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer(
+        text="To start making event from a scratch press /start"
+    )
+
+
+@router.message(
+    Command("delete"), default_state, AdminFilter()
+)
+async def cmd_delete(message: Message, chat_ids_with_lottery: dict):
+    if len(chat_ids_with_lottery[message.chat.id]) == 0:
+        await message.answer(
+            text="There is no lottery to delete"
+        )
+    else:
+        name = chat_ids_with_lottery[message.chat.id]["name"]
+        await message.answer(
+            text="The only event {} is deleted".format(name)
+        )
+        chat_ids_with_lottery[message.chat.id].clear()
+        print(chat_ids_with_lottery[message.chat.id])
+
+
