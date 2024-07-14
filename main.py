@@ -19,7 +19,7 @@ from handlers.left_member import router as left_router
 from handlers.joined_member import router as joined_router
 from callback import router as cb_router
 from handlers.fsm_commands import (
-    name_fsm, description_fsm, prize_fsm, date_fsm
+    name_fsm, description_fsm, prize_fsm, date_fsm, time_fsm
 )
 
 chat_ids_with_adm = {}
@@ -50,7 +50,8 @@ async def main():
         name_fsm.router,
         description_fsm.router,
         prize_fsm.router,
-        date_fsm.router
+        date_fsm.router,
+        time_fsm.router
     )
     
     

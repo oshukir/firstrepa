@@ -14,14 +14,18 @@ router.chat_member.filter(ChatMemberUpdatedFilter(member_status_changed=ADMINIST
 
 @router.message(OrganiseEvent.set_date, F.text, CheckDateFormat())
 async def name_fsm_handler(message: Message, state: FSMContext, date: List[int]):
-    await state.set_state(OrganiseEvent.set_time)
-    await state.update_data(date=date)
+    if date[0] == "error":
+        await message.answer("Please, the date should be set at least for tomorrow")
+    
+    else:
+        await state.set_state(OrganiseEvent.set_time)
+        await state.update_data(date=date)
     
 
-    await message.answer("Perfect. Now, enter the time deadline as next template\n"
-                         "hh:mm")
+        await message.answer("Perfect. Now, enter the time deadline as next template\n"
+                             "hh:mm")
     
 @router.message(OrganiseEvent.set_date)
 async def name_fsm_handler(message: Message, state: FSMContext):
     await message.answer("No, no, no, my friend. Try to follow next template\n"
-                         "dd/mm/yy")
+                         "dd/mm/YYYY")
