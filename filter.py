@@ -36,7 +36,7 @@ class CheckDateFormat(BaseFilter):
             print(f"{day} and {type(day)}")
 
 
-            if today < future_date:
+            if (today.day <= future_date.day and today.month <= future_date.month and today.year <= future_date.year):
                 print("THE DATE IS SET FOR A FUTURE EVENT")
                 return {"date": [year, month, day]}
             else:

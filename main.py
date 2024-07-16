@@ -6,7 +6,9 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import Command
 from config_reader import config
-
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from middlewares import SchedulerMiddleware
+from tzlocal import get_localzone
 
 from handlers.usual_commands_for_start.group import (
     router as group_router
@@ -56,6 +58,9 @@ async def main():
         time_fsm.router,
         image_fsm.router
     )
+    scheduler = AsyncIOScheduler(timezone=get_localzone())
+    dp.update.middleware.register(SchedulerMiddleware(scheduler=scheduler))
+    scheduler.start()
     
     
     await dp.start_polling(bot, allowed_updates=["message", "inline_query", "my_chat_member", "chat_member", "callback_query"], chat_ids_with_adm=chat_ids_with_adm,
