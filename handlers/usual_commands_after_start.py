@@ -10,6 +10,7 @@ from typing import Dict
 from keyboards.inline_keyboard import get_keyboard
 from filter import AdminFilter
 from datetime import datetime, timedelta
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 
 router = Router()
@@ -57,7 +58,7 @@ async def cmd_cancel(message: Message, state: FSMContext):
 @router.message(
     Command("delete"), default_state, AdminFilter()
 )
-async def cmd_delete(message: Message, chat_ids_with_lottery: dict, chat_ids_with_players, bot: Bot, pinned_message):
+async def cmd_delete(message: Message, chat_ids_with_lottery: dict, chat_ids_with_players, bot: Bot, pinned_message, apscheduler: AsyncIOScheduler):
     if len(chat_ids_with_lottery[message.chat.id]) == 0:
         await message.answer(
             text="There is no lottery to delete"
@@ -69,9 +70,13 @@ async def cmd_delete(message: Message, chat_ids_with_lottery: dict, chat_ids_wit
         )
         chat_ids_with_lottery[message.chat.id].clear()
         chat_ids_with_players[message.chat.id].clear()
+        apscheduler.remove_job("one_job")
+
 
         bot.unpin_chat_message(chat_id=message.chat.id, message_id=pinned_message)
         print(chat_ids_with_lottery[message.chat.id])
+
+        
 
 
 @router.message(

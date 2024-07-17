@@ -73,6 +73,7 @@ async def download_photo(message: Message, bot: Bot, state: FSMContext, chat_ids
             send_message_by_schedule,
             trigger="date",
             run_date=run_date,
+            id="one_job",
             kwargs={
                 'bot': bot,
                 'chat_id': message.chat.id,
