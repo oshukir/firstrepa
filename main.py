@@ -5,6 +5,7 @@ from aiogram import Bot, Dispatcher, Router, types
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import Command
+from aiogram.types import BotCommand
 from config_reader import config
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from middlewares import SchedulerMiddleware
@@ -28,6 +29,25 @@ chat_ids_with_adm = {}
 chat_ids_with_players={}
 chat_ids_with_lottery={}
 pinned_message = ""
+
+
+async def set_main_menu(bot: Bot):
+
+    # Создаем список с командами и их описанием для кнопки menu
+    main_menu_commands = [
+        BotCommand(command='/start',
+                   description='Start organizing a new lottery (admins only). 🎉'),
+        BotCommand(command='/cancel',
+                   description='Cancel the process of creating a lottery (admins only). 🚫'),
+        BotCommand(command='/delete',
+                   description='Delete the existing lottery (admins only). ❌'),
+        BotCommand(command='/time_left',
+                   description='Check the time remaining until the lottery deadline (for all members). ⏳'),
+        BotCommand(command='/participants_number',
+                   description='Check the number of participants in the lottery (for all members). 🧑‍🤝‍🧑')
+    ]
+
+    await bot.set_my_commands(main_menu_commands)
 
 
 async def main():
@@ -60,6 +80,7 @@ async def main():
     )
     scheduler = AsyncIOScheduler(timezone=get_localzone())
     dp.update.middleware.register(SchedulerMiddleware(scheduler=scheduler))
+    dp.startup.register(set_main_menu)
     scheduler.start()
     
     
